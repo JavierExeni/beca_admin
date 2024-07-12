@@ -1,0 +1,36 @@
+<a
+  [routerLink]="navOption().route"
+  routerLinkActive="bg-opac-gray"
+  (click)="toggleOptions = !toggleOptions"
+  class="group cursor-pointer relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-light-gray duration-300 ease-in-out hover:bg-opac-gray"
+>
+  <span class="flex items-center justify-between w-full">
+    <span class="grid grid-cols-[30px_auto] items-center">
+      <i [ngClass]="navOption().icon" class="fa-solid"></i>
+      <span> {{ navOption().option }} </span>
+    </span>
+    <!-- Visible when has childrens -->
+    @if (navOption().hasChildrens) {
+    <i class="fa-solid fa-angle-up transform transition-all duration-300 ease-in-out" [ngClass]="{'rotate-180': toggleOptions}"></i>
+    }
+  </span>
+</a>
+<!-- Visible when has childrens -->
+@if (navOption().hasChildrens && toggleOptions) {
+<div>
+  <ul class="mb-5 mt-3 flex flex-col gap-2.5 pl-6">
+    @for (item of navOption().childrens; track $index) {
+    <li>
+      <a
+        [routerLink]="item.route"
+        [routerLinkActiveOptions]="{exact: true}"
+        routerLinkActive="text-white"
+        class="group cursor-pointer relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-gray duration-300 ease-in-out hover:text-white"
+      >
+        {{ item.option }}
+      </a>
+    </li>
+    }
+  </ul>
+</div>
+}

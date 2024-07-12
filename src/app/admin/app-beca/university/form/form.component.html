@@ -1,0 +1,45 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <fieldset class="grid grid-cols-1 gap-4">
+    <div class="form-element">
+      <label for="uni-name">Nombre de la Universidad</label>
+      <input type="text" pInputText formControlName="name" />
+    </div>
+    <div class="form-element">
+      <label for="uni-web_site">Sitio Web</label>
+      <input type="text" pInputText formControlName="web_site" />
+    </div>
+    <div class="form-element">
+      <label for="uni-google_map_code">Código de Goole Map</label>
+      <input type="text" pInputText formControlName="google_map_code" />
+    </div>
+    <div class="form-element">
+      <label for="client-birthday">Tipo</label>
+      <p-selectButton
+        [options]="stateOptions"
+        formControlName="type"
+        optionLabel="label"
+        optionValue="value"
+      />
+    </div>
+    <div class="form-element">
+      <label for="upload">Ciudad</label>
+      <p-dropdown
+        formControlName="city"
+        [options]="cityService.cities()"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Seleccionar"
+        appendTo="body"
+      />
+    </div>
+  </fieldset>
+  <div class="flex justify-end mt-4">
+    <p-button
+      aria-label="submit button"
+      type="submit"
+      size="small"
+      [label]="isEdit() ? 'Actualizar' : 'Registrar'"
+      [loading]="universityService.isLoading()"
+    />
+  </div>
+</form>

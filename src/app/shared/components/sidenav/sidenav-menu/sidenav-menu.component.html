@@ -1,0 +1,10 @@
+<div>
+  <h3 class="mb-4 ml-4 text-sm font-light text-gray">{{ navMenuOption().category }}</h3>
+  <ul class="mb-6 flex flex-col gap-1.5">
+    @for (item of navMenuOption().childrens; track $index) {
+      <li>
+        <app-sidenav-item [navOption]="item"></app-sidenav-item>
+      </li>
+    }
+  </ul>
+</div>

@@ -1,0 +1,16 @@
+<aside
+  class="absolute left-0 top-0 z-9999 flex h-screen w-72 flex-col overflow-y-hidden bg-regular-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 -translate-x-full"
+>
+  <div class="flex items-center justify-between gap-2 px-6 py-5 lg:py-6">
+    <a class="h-[32px] text-white">Becademia</a>
+  </div>
+  <div
+    class="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear"
+  >
+    <nav class="mt-5 px-4 py-4 lg:mt-9 lg:px-6">
+      @for (item of navigationOptions; track $index) {
+        <app-sidenav-menu [navMenuOption]="item"></app-sidenav-menu>
+      }
+    </nav>
+  </div>
+</aside>

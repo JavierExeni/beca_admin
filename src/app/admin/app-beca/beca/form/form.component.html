@@ -1,0 +1,56 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <fieldset class="grid grid-cols-1 gap-4">
+    <div class="form-element">
+      <label for="beca-name">Nombre</label>
+      <input type="text" pInputText formControlName="name" />
+    </div>
+    <div class="form-element">
+      <label for="beca-begin">Fecah Inicio</label>
+      <p-calendar id="beca-begin" formControlName="begin" />
+    </div>
+    <div class="form-element">
+      <label for="beca-duration_per_days">Días de duración</label>
+      <input type="text" pInputText formControlName="duration_per_days" />
+    </div>
+    <div class="form-element">
+      <label for="client-birthday">Degree</label>
+      <p-selectButton
+        [options]="stateOptions"
+        formControlName="degree"
+        optionLabel="label"
+        optionValue="value"
+      />
+    </div>
+    <div class="form-element">
+      <label for="upload">Ciudad</label>
+      <p-dropdown
+        formControlName="city_id"
+        [options]="cityService.cities()"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Seleccionar"
+        appendTo="body"
+      />
+    </div>
+    <div class="form-element">
+      <label for="upload">Universidad</label>
+      <p-dropdown
+        formControlName="collage_id"
+        [options]="universityService.universities()"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Seleccionar"
+        appendTo="body"
+      />
+    </div>
+  </fieldset>
+  <div class="flex justify-end mt-4">
+    <p-button
+      aria-label="submit button"
+      type="submit"
+      size="small"
+      [label]="isEdit() ? 'Actualizar' : 'Registrar'"
+      [loading]="becaService.isLoading()"
+    />
+  </div>
+</form>

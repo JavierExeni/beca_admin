@@ -1,0 +1,21 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <fieldset class="grid grid-cols-1 gap-4">
+    <div class="form-element">
+      <label for="level-name">Name</label>
+      <input id="level-name" type="text" pInputText formControlName="name" />
+    </div>
+    <div class="form-element">
+      <label for="description">Descripción</label>
+      <input id="description" type="text" pInputText formControlName="description" />
+    </div>
+  </fieldset>
+  <div class="flex justify-end mt-4">
+    <p-button
+      aria-label="submit button"
+      type="submit"
+      size="small"
+      [label]="isEdit() ? 'Actualizar' : 'Registrar'"
+      [loading]="levelService.isLoading()"
+    />
+  </div>
+</form>

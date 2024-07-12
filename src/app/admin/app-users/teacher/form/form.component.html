@@ -1,0 +1,57 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <fieldset class="grid grid-cols-1 gap-4">
+    <div class="form-element">
+      <label for="client-username">Nombre de usuario</label>
+      <input type="text" pInputText formControlName="username" />
+    </div>
+    <div class="form-element">
+      <label for="client-password">Contraseña</label>
+      <input type="text" pInputText formControlName="password" />
+    </div>
+    <div class="form-element">
+      <label for="client-first-name">Nombres</label>
+      <input type="text" pInputText formControlName="first_name" />
+    </div>
+    <div class="form-element">
+      <label for="client-last-name">Apellidos</label>
+      <input type="text" pInputText formControlName="last_name" />
+    </div>
+    <div class="form-element">
+      <label for="client-email">Email</label>
+      <input type="text" pInputText formControlName="email" />
+    </div>
+    <div class="form-element">
+      <label for="client-birthday">Fecha de Nacimiento</label>
+      <p-calendar id="birthday" formControlName="birthday" />
+    </div>
+    <div class="form-element">
+      <label for="client-birthday">Genero</label>
+      <p-selectButton
+        [options]="stateOptions"
+        formControlName="gender"
+        optionLabel="label"
+        optionValue="value"
+      />
+    </div>
+    <div class="form-element">
+      <label for="upload">Ciudad</label>
+      <p-dropdown
+        formControlName="city_id"
+        [options]="cityService.cities()"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Seleccionar"
+        appendTo="body"
+      />
+    </div>
+  </fieldset>
+  <div class="flex justify-end mt-4">
+    <p-button
+      aria-label="submit button"
+      type="submit"
+      size="small"
+      [label]="isEdit() ? 'Actualizar' : 'Registrar'"
+      [loading]="userService.isLoading()"
+    />
+  </div>
+</form>

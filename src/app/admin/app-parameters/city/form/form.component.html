@@ -1,0 +1,32 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <fieldset class="grid grid-cols-1 gap-4">
+    <div class="form-element">
+      <label for="area-name">Name</label>
+      <input type="text" pInputText formControlName="name" />
+    </div>
+    <div class="form-element">
+      <label for="area-name">Código</label>
+      <input type="text" pInputText formControlName="code" />
+    </div>
+    <div class="form-element">
+      <label for="upload">País</label>
+      <p-dropdown
+        formControlName="country_id"
+        [options]="countryService.countries()"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Seleccionar"
+        appendTo="body"
+      />
+    </div>
+  </fieldset>
+  <div class="flex justify-end mt-4">
+    <p-button
+      aria-label="submit button"
+      type="submit"
+      size="small"
+      [label]="isEdit() ? 'Actualizar' : 'Registrar'"
+      [loading]="cityService.isLoading()"
+    />
+  </div>
+</form>

@@ -1,1 +1,27 @@
-/* You can add global styles to this file, and also import other style files */
+@layer tailwind-base, primeng, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+@font-face {
+  font-family: sataoshi-regular;
+  src: url(/fonts/Satoshi-Regular.ttf) format("truetype");
+}
+
+.p-overlaypanel .p-overlaypanel-content {
+  padding: 0;
+}
+
+.form-element {
+  display: grid;
+}
+
+.form-element label {
+  margin-bottom: 5px;
+}

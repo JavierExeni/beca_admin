@@ -1,0 +1,48 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <fieldset class="grid grid-cols-1 gap-4">
+    <div class="form-element">
+      <label for="upload">Imágen de la Bandera</label>
+      <p-fileUpload
+        #fileUpload
+        id="upload"
+        mode="basic"
+        chooseLabel="Seleccionar"
+        name="myfile[]"
+        [customUpload]="true"
+        (onSelect)="saveDocument($event)"
+        accept="image/*"
+        [maxFileSize]="10000000000"
+        size="small"
+        styleClass="p-button-sm"
+      ></p-fileUpload>
+      @if (hasProfile) {
+      <p-button
+        type="button"
+        (click)="deleteDocument(fileUpload)"
+        label="Remover"
+        aria-label="remove button"
+        severity="danger"
+        size="small"
+        styleClass="mt-2"
+      ></p-button>
+      }
+    </div>
+    <div class="form-element">
+      <label for="area-name">Name</label>
+      <input type="text" pInputText formControlName="name" />
+    </div>
+    <div class="form-element">
+      <label for="area-name">Código</label>
+      <input type="text" pInputText formControlName="code" />
+    </div>
+  </fieldset>
+  <div class="flex justify-end mt-4">
+    <p-button
+      aria-label="submit button"
+      type="submit"
+      size="small"
+      [label]="isEdit() ? 'Actualizar' : 'Registrar'"
+      [loading]="languageService.isLoading()"
+    />
+  </div>
+</form>

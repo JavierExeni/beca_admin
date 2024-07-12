@@ -1,0 +1,4 @@
+export enum UNIVERSITY_TYPE {
+  PUBLIC,
+  PRIVATE,
+}

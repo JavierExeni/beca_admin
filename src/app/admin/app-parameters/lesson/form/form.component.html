@@ -1,0 +1,45 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <fieldset class="grid grid-cols-1 gap-4">
+    <div class="form-element">
+      <label for="lesson-title">Titulo</label>
+      <input type="text" pInputText formControlName="title" />
+    </div>
+    <div class="form-element">
+      <label for="lesson-order">Orden</label>
+      <p-inputNumber
+        formControlName="order"
+        mode="decimal"
+        inputId="lesson-order"
+        [useGrouping]="false"
+      />
+    </div>
+    <div class="form-element">
+      <label for="lesson-description">Descripción</label>
+      <input type="text" pInputText formControlName="description" />
+    </div>
+    <div class="form-element">
+      <label for="lesson-youtube">Código de YouTube</label>
+      <input type="text" pInputText formControlName="youtube_code" />
+    </div>
+    <div class="form-element">
+      <label for="upload">Tema</label>
+      <p-dropdown
+        formControlName="topic"
+        [options]="topicService.topics()"
+        optionLabel="title"
+        optionValue="id"
+        placeholder="Seleccionar"
+        appendTo="body"
+      />
+    </div>
+  </fieldset>
+  <div class="flex justify-end mt-4">
+    <p-button
+      aria-label="submit button"
+      type="submit"
+      size="small"
+      [label]="isEdit() ? 'Actualizar' : 'Registrar'"
+      [loading]="lessonService.isLoading()"
+    />
+  </div>
+</form>

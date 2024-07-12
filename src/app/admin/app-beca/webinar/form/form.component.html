@@ -1,0 +1,25 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <fieldset class="grid grid-cols-1 gap-4">
+    <div class="form-element">
+      <label for="webinar-title">Titulo</label>
+      <input type="text" pInputText formControlName="title" />
+    </div>
+    <div class="form-element">
+      <label for="webinar-description">Descripción</label>
+      <input type="text" pInputText formControlName="description" />
+    </div>
+    <div class="form-element">
+      <label for="beca-youtube_code">Código YouTube</label>
+      <input type="text" pInputText formControlName="youtube_code" />
+    </div>
+  </fieldset>
+  <div class="flex justify-end mt-4">
+    <p-button
+      aria-label="submit button"
+      type="submit"
+      size="small"
+      [label]="isEdit() ? 'Actualizar' : 'Registrar'"
+      [loading]="webinarService.isLoading()"
+    />
+  </div>
+</form>
