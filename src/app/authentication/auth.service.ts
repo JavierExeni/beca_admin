@@ -8,9 +8,11 @@ import { jwtDecode } from 'jwt-decode';
 import { PersistanceService } from '../shared/services/persistance.service';
 import { UserService } from '../admin/services/user.service';
 import { Router } from '@angular/router';
+import { USER_TYPE } from '../shared/enum';
 
 interface State {
   user: User | null;
+  role: USER_TYPE | null;
   loading: boolean;
 }
 
@@ -27,6 +29,7 @@ export class AuthService {
 
   #state = signal<State>({
     user: null,
+    role: null,
     loading: false,
   });
 
@@ -34,6 +37,13 @@ export class AuthService {
     this.#state.update((oldValue) => ({
       ...oldValue,
       user,
+    }));
+  }
+
+  changeRoleState(role: USER_TYPE | null) {
+    this.#state.update((oldValue) => ({
+      ...oldValue,
+      role,
     }));
   }
 
@@ -46,9 +56,16 @@ export class AuthService {
 
   public isLoading = computed<boolean>(() => this.#state().loading);
   public user = computed<User | null>(() => this.#state().user);
+  public role = computed<USER_TYPE | null>(() =>
+    this.isLoggedIn() && this.#state().role
+      ? this.#state().role
+      : this.persistanceService.get('currentRole')
+  );
+
   public isLoggedIn = computed<boolean>(() =>
     this.persistanceService.get('accessToken') ? true : false
   );
+
   public currentLoggedUser = computed<User>(() =>
     this.isLoggedIn() && this.user()
       ? this.user()
@@ -61,7 +78,9 @@ export class AuthService {
     return this.http.post<AuthResponse>(url, data).pipe(
       concatMap(({ access }) => {
         const decoded: AuthDecoded = jwtDecode(access);
+        this.changeRoleState(decoded.user_role);
         this.persistanceService.set('accessToken', access);
+        this.persistanceService.set('currentRole', decoded.user_role);
         return this.userService.getUser(decoded.user_id);
       }),
       tap((user) => {

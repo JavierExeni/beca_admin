@@ -1,13 +1,16 @@
-import { Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { NavMenu } from '../types';
+import { AuthService } from '../../authentication/auth.service';
+import { USER_TYPE } from '../enum';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MenuService {
   toggleMenuState = signal(true);
+  authService = inject(AuthService);
 
-  navigationOptions = signal<NavMenu[]>([
+  adminNavigationOptions = signal<NavMenu[]>([
     {
       category: 'Menu',
       childrens: [
@@ -120,11 +123,57 @@ export class MenuService {
           icon: 'fa-book',
           visible: true,
           hasChildrens: false,
-          childrens: null
+          childrens: null,
         },
       ],
     },
   ]);
+
+  clientNavigationOptions = signal<NavMenu[]>([
+    {
+      category: 'Navegación',
+      childrens: [
+        {
+          option: 'Dashboard',
+          route: 'parametros/temas',
+          icon: 'fa-chart-line',
+          visible: true,
+          hasChildrens: false,
+          childrens: null,
+        },
+        {
+          option: 'Mis Webinars',
+          route: 'parametros/temas',
+          icon: 'fa-video',
+          visible: true,
+          hasChildrens: false,
+          childrens: null,
+        },
+        {
+          option: 'Mis Cursos',
+          route: 'parametros/temas',
+          icon: 'fa-pencil',
+          visible: true,
+          hasChildrens: false,
+          childrens: null,
+        },
+        {
+          option: 'Mis Becas',
+          route: 'parametros/temas',
+          icon: 'fa-graduation-cap',
+          visible: true,
+          hasChildrens: false,
+          childrens: null,
+        },
+      ],
+    },
+  ]);
+
+  public navigationOptions = computed<NavMenu[]>(() =>
+    this.authService.role() == USER_TYPE.ADMIN
+      ? this.adminNavigationOptions()
+      : this.clientNavigationOptions()
+  );
 
   changeMenuState(newSate: boolean) {
     this.toggleMenuState.set(newSate);

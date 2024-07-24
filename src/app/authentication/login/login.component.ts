@@ -32,7 +32,8 @@ export class LoginComponent {
   onSubmit() {
     const data: LoginRequest = this.form.getRawValue();
     this.authService.login(data).subscribe({
-      next: () => {
+      next: (res) => {
+        console.log(res)
         this.router.navigateByUrl('');
       },
       error: (err: HttpErrorResponse) => {

@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { adminGuard } from './shared/guards/admin.guard';
+import { authGuard } from './shared/guards/auth.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    canActivateChild: [adminGuard],
+    canActivateChild: [authGuard],
     loadChildren: () =>
       import('./admin/admin.routes').then((m) => m.ADMIN_ROUTES),
   },
