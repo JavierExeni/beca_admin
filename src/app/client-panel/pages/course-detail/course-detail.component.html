@@ -1,0 +1,41 @@
+<p-breadcrumb class="max-w-full" [model]="items">
+  <ng-template pTemplate="item" let-item>
+    @if (item.route) {
+    <a [routerLink]="item.route" class="p-menuitem-link">
+      <i [ngClass]="[item.icon ? item.icon : '', 'text-[#334155]']"></i>
+      <span class="text-[#334155]">{{ item.label }}</span>
+    </a>
+    }@else {
+    <a [href]="item.url">
+      <span class="font-semibold text-blue-500">{{ item.label }}</span>
+    </a>
+    }
+  </ng-template>
+</p-breadcrumb>
+@if (course$ | async; as data) {
+<div
+  class="rounded-sm border border-light-gray bg-white px-5 py-6 shadow-sm drop-shadow-md sm:px-7 mb-5"
+>
+  <h1 class="text-3xl font-semibold mb-5">
+    Grado {{ data.level.name }} - {{ data.title }}
+  </h1>
+
+  <div class="grid grid-cols-[1fr_300px] gap-5">
+    <app-lesson-list [data]="{ course: data }"></app-lesson-list>
+    <div>
+      <p-fieldset legend="Acerca de este curso">
+        <p [innerHTML]="data.level.description"></p>
+      </p-fieldset>
+
+      @if (true) {
+      <p-button styleClass="mt-5 flex items-center gap-2 font-semibold">
+        <span>
+          <i class="fa-solid fa-graduation-cap"></i>
+        </span>
+        <span> Suscribirse </span>
+      </p-button>
+      }
+    </div>
+  </div>
+</div>
+}

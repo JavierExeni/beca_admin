@@ -12,7 +12,7 @@ interface State {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TopicService {
   http = inject(HttpClient);
@@ -46,12 +46,32 @@ export class TopicService {
     this.getTopics().subscribe();
   }
 
-  constructor() {
-    this.loadTopics();
+  loadTopicsByCourse(id: number) {
+    this.changeLoadingState(true);
+    this.getTopicsByCourse(id).subscribe();
   }
 
   getTopics() {
     const url = `${this.baseUrl}`;
+    return this.http.get<Topic[]>(url).pipe(
+      tap((topics) => {
+        this.changeLoadingState(false);
+        this.changeListState(topics);
+      }),
+      catchError(() => {
+        this.changeLoadingState(false);
+        return EMPTY;
+      })
+    );
+  }
+
+  getSingleTopic(id: number) {
+    const url = `${this.baseUrl}${id}/`;
+    return this.http.get<Topic>(url);
+  }
+
+  getTopicsByCourse(id: number) {
+    const url = `${this.baseUrl}${id}/course/`;
     return this.http.get<Topic[]>(url).pipe(
       tap((topics) => {
         this.changeLoadingState(false);
@@ -81,12 +101,16 @@ export class TopicService {
   update(id: number, request: Partial<TopicRequest>) {
     this.changeLoadingState(true);
     const url = `${this.baseUrl}${id}/`;
-    return this.http.patch<Topic>(url, request);
+    return this.http
+      .patch<Topic>(url, request)
+      .pipe(tap(() => this.changeLoadingState(false)));
   }
 
   delete(id: number) {
     this.changeLoadingState(true);
     const url = `${this.baseUrl}${id}/`;
-    return this.http.delete(url);
+    return this.http
+      .delete(url)
+      .pipe(tap(() => this.changeLoadingState(false)));
   }
 }

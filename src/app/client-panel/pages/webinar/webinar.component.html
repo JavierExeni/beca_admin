@@ -1,0 +1,48 @@
+<div
+  class="rounded-sm border border-light-gray bg-white px-5 py-6 shadow-sm drop-shadow-md sm:px-7 mb-5"
+>
+  <h1 class="text-3xl font-semibold mb-3">Webinars y diferidos</h1>
+  <p class="lg:max-w-[80%]">
+    Si existe una transmisión en vivo, el video en la parte inferior mostrará un
+    "En directo" con un icono rojo. Aquí podrás ver todos los webinars pasados y
+    alimentarte aun más de conocimiento, escuchas consejos de los profesores,
+    aprender de dudas de otros usuarios, aprender de cosas que tal vez aun no
+    sabias y que son, ¡de gran ayuda!
+  </p>
+</div>
+
+<div class="flex flex-wrap">
+  @for (item of webinarService.webinars(); track $index) {
+  <div
+    class="rounded-sm border border-light-gray bg-white shadow-sm drop-shadow-md max-w-[300px]"
+  >
+    <img
+      [routerLink]="['/public/webinars/', item.id]"
+      [src]="
+        'https://i.ytimg.com/vi_webp/' + item.youtube_code + '/sddefault.webp'
+      "
+      alt="image"
+      class="w-full cursor-pointer"
+    />
+    <div class="p-8 sm:p-9 md:p-7 xl:p-9 text-center">
+      <h3>
+        <a
+          class="font-semibold text-dark text-xl sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px] mb-4 block hover:text-primary"
+        >
+          {{ item.title }}
+        </a>
+      </h3>
+      <p
+        [innerHTML]="item.description"
+        class="text-base text-body-color leading-relaxed mb-7"
+      ></p>
+      <a
+        [routerLink]="['/public/webinars/', item.id]"
+        class="inline-block cursor-pointer py-2 px-7 border border-[#E5E7EB] rounded-full text-base text-body-color font-medium hover:border-primary hover:bg-primary hover:text-black transition"
+      >
+        Ver Webinar
+      </a>
+    </div>
+  </div>
+  }
+</div>

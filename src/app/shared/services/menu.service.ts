@@ -22,8 +22,16 @@ export class MenuService {
           hasChildrens: true,
           childrens: [
             {
+              option: 'Administradores',
+              route: '/admin/usuarios/administradores',
+              icon: 'fa-user',
+              visible: true,
+              hasChildrens: false,
+              childrens: null,
+            },
+            {
               option: 'Clientes',
-              route: 'usuarios/clientes',
+              route: '/admin/usuarios/clientes',
               icon: 'fa-user',
               visible: true,
               hasChildrens: false,
@@ -31,7 +39,7 @@ export class MenuService {
             },
             {
               option: 'Profesores',
-              route: 'usuarios/profesores',
+              route: '/admin/usuarios/profesores',
               icon: 'fa-user',
               visible: true,
               hasChildrens: false,
@@ -41,7 +49,7 @@ export class MenuService {
         },
         {
           option: 'Universidades',
-          route: 'beca/universidades',
+          route: '/admin/beca/universidades',
           icon: 'fa-building-columns',
           visible: true,
           hasChildrens: false,
@@ -49,7 +57,7 @@ export class MenuService {
         },
         {
           option: 'Becas',
-          route: 'beca/becas',
+          route: '/admin/beca/becas',
           icon: 'fa-medal',
           visible: true,
           hasChildrens: false,
@@ -58,7 +66,7 @@ export class MenuService {
 
         {
           option: 'Webinars',
-          route: 'beca/webinars',
+          route: '/admin/beca/webinars',
           icon: 'fa-clapperboard',
           visible: true,
           hasChildrens: false,
@@ -71,7 +79,7 @@ export class MenuService {
       childrens: [
         {
           option: 'Paises',
-          route: 'parametros/paises',
+          route: '/admin/parametros/paises',
           icon: 'fa-earth-americas',
           visible: true,
           hasChildrens: false,
@@ -79,7 +87,7 @@ export class MenuService {
         },
         {
           option: 'Ciudades',
-          route: 'parametros/ciudades',
+          route: '/admin/parametros/ciudades',
           icon: 'fa-city',
           visible: true,
           hasChildrens: false,
@@ -87,7 +95,7 @@ export class MenuService {
         },
         {
           option: 'Lenguajes',
-          route: 'parametros/lenguajes',
+          route: '/admin/parametros/lenguajes',
           icon: 'fa-language',
           visible: true,
           hasChildrens: false,
@@ -95,32 +103,40 @@ export class MenuService {
         },
         {
           option: 'Niveles',
-          route: 'parametros/niveles',
+          route: '/admin/parametros/niveles',
           icon: 'fa-layer-group',
           visible: true,
           hasChildrens: false,
           childrens: null,
         },
         {
-          option: 'Temas',
-          route: 'parametros/temas',
+          option: 'Cursos',
+          route: '/admin/parametros/cursos',
           icon: 'fa-tags',
           visible: true,
           hasChildrens: false,
           childrens: null,
         },
+      ],
+    },
+  ]);
+
+  teacherNavigationOptions = signal<NavMenu[]>([
+    {
+      category: 'Menu',
+      childrens: [
         {
-          option: 'Lecciones',
-          route: 'parametros/lecciones',
-          icon: 'fa-person-chalkboard',
+          option: 'Webinars',
+          route: '/admin/beca/webinars',
+          icon: 'fa-clapperboard',
           visible: true,
           hasChildrens: false,
           childrens: null,
         },
         {
-          option: 'Evaluaciones',
-          route: 'parametros/evaluaciones',
-          icon: 'fa-book',
+          option: 'Cursos',
+          route: '/admin/parametros/cursos',
+          icon: 'fa-pencil',
           visible: true,
           hasChildrens: false,
           childrens: null,
@@ -133,17 +149,17 @@ export class MenuService {
     {
       category: 'Navegación',
       childrens: [
-        {
-          option: 'Dashboard',
-          route: 'parametros/temas',
-          icon: 'fa-chart-line',
-          visible: true,
-          hasChildrens: false,
-          childrens: null,
-        },
+        // {
+        //   option: 'Dashboard',
+        //   route: '/public/dashboard',
+        //   icon: 'fa-chart-line',
+        //   visible: true,
+        //   hasChildrens: false,
+        //   childrens: null,
+        // },
         {
           option: 'Mis Webinars',
-          route: 'parametros/temas',
+          route: '/public/webinars',
           icon: 'fa-video',
           visible: true,
           hasChildrens: false,
@@ -151,7 +167,7 @@ export class MenuService {
         },
         {
           option: 'Mis Cursos',
-          route: 'parametros/temas',
+          route: '/public/cursos',
           icon: 'fa-pencil',
           visible: true,
           hasChildrens: false,
@@ -159,7 +175,7 @@ export class MenuService {
         },
         {
           option: 'Mis Becas',
-          route: 'parametros/temas',
+          route: '/public/becas',
           icon: 'fa-graduation-cap',
           visible: true,
           hasChildrens: false,
@@ -169,11 +185,18 @@ export class MenuService {
     },
   ]);
 
-  public navigationOptions = computed<NavMenu[]>(() =>
-    this.authService.role() == USER_TYPE.ADMIN
-      ? this.adminNavigationOptions()
-      : this.clientNavigationOptions()
-  );
+  public navigationOptions = computed<NavMenu[]>(() => {
+    switch (this.authService.role()) {
+      case USER_TYPE.ADMIN:
+        return this.adminNavigationOptions();
+      case USER_TYPE.TEACHER:
+        return this.teacherNavigationOptions();
+      case USER_TYPE.CLIENT:
+        return this.clientNavigationOptions();
+      default:
+        return [];
+    }
+  });
 
   changeMenuState(newSate: boolean) {
     this.toggleMenuState.set(newSate);

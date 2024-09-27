@@ -1,0 +1,28 @@
+<div class="h-full grid place-items-center">
+  @if (data$ | async; as data) {
+  <div
+    class="rounded-sm border border-light-gray bg-white px-5 py-6 shadow-sm drop-shadow-md sm:px-7 mb-5 max-w-[800px]"
+  >
+    <div class="flex items-start gap-5">
+      <i class="block fa-solid fa-pen-to-square text-8xl text-blue-500"></i>
+      <div>
+        <h1 class="text-3xl font-semibold mb-3">¡Muy Bien!</h1>
+        <h2 class="font-semibold">
+          Tomarás el examen del grado A2 : ingles basico 1
+        </h2>
+        <p>
+          No te preocupes. Puedes intentar pasar el examen tantas veces como
+          quieras. Si fallas, lo puedes reintentar. Cero estrés. ¡Tú puedes!
+        </p>
+        <div class="flex items-center gap-5 mt-5">
+          <p-button
+            [routerLink]="['/public/cursos/', data.course!.id]"
+            label="Volver"
+          />
+          <p-button  [routerLink]="['/public/test/', data.id]" label="¡Empecemos!" severity="success" />
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+</div>

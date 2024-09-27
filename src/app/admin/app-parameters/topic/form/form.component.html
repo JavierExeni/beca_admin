@@ -13,17 +13,6 @@
         [useGrouping]="false"
       />
     </div>
-    <div class="form-element">
-      <label for="upload">Cursos</label>
-      <p-dropdown
-        formControlName="course_id"
-        [options]="courseService.courses()"
-        optionLabel="name"
-        optionValue="id"
-        placeholder="Seleccionar"
-        appendTo="body"
-      />
-    </div>
   </fieldset>
   <div class="flex justify-end mt-4">
     <p-button

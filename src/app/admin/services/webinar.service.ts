@@ -6,11 +6,12 @@ import { catchError, EMPTY, Observable, tap } from 'rxjs';
 
 interface State {
   webinars: Webinar[];
+  public_webinars: Webinar[];
   loading: boolean;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class WebinarService {
   http = inject(HttpClient);
@@ -19,6 +20,7 @@ export class WebinarService {
 
   #state = signal<State>({
     webinars: [],
+    public_webinars: [],
     loading: false,
   });
 
@@ -60,6 +62,11 @@ export class WebinarService {
         return EMPTY;
       })
     );
+  }
+
+  getSingelWebinar(id: number): Observable<Webinar> {
+    const url = `${this.baseUrl}${id}/`;
+    return this.http.get<Webinar>(url);
   }
 
   create(request: WebinarRequest): Observable<Webinar> {

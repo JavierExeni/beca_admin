@@ -10,7 +10,7 @@ interface State {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CourseService {
   http = inject(HttpClient);
@@ -22,10 +22,10 @@ export class CourseService {
     loading: false,
   });
 
-  changeListState(course: Course[]) {
+  changeListState(courses: Course[]) {
     this.#state.update((oldValue) => ({
       ...oldValue,
-      course,
+      courses,
     }));
   }
 
@@ -39,17 +39,41 @@ export class CourseService {
   public isLoading = computed<boolean>(() => this.#state().loading);
   public courses = computed<Course[]>(() => this.#state().courses);
 
+  constructor() {
+    this.loadCourses();
+  }
+
   loadCourses() {
     this.changeLoadingState(true);
     this.getCourses().subscribe();
   }
 
-  constructor() {
-    this.loadCourses();
+  loadClientCourses() {
+    this.changeLoadingState(true);
+    this.getClientCourses().subscribe();
   }
 
   getCourses() {
     const url = `${this.baseUrl}`;
+    return this.http.get<Course[]>(url).pipe(
+      tap((courses) => {
+        this.changeLoadingState(false);
+        this.changeListState(courses);
+      }),
+      catchError(() => {
+        this.changeLoadingState(false);
+        return EMPTY;
+      })
+    );
+  }
+
+  getSingleCourse(id: number) {
+    const url = `${this.baseUrl}${id}/`;
+    return this.http.get<Course>(url);
+  }
+
+  getClientCourses() {
+    const url = `${this.baseUrl}user/courses/`;
     return this.http.get<Course[]>(url).pipe(
       tap((courses) => {
         this.changeLoadingState(false);
@@ -86,5 +110,10 @@ export class CourseService {
     this.changeLoadingState(true);
     const url = `${this.baseUrl}${id}/`;
     return this.http.delete(url);
+  }
+
+  addClient(courseId: number): Observable<Course> {
+    const url = `${this.baseUrl}${courseId}/add-client/`;
+    return this.http.get<Course>(url);
   }
 }

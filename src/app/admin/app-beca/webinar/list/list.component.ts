@@ -10,6 +10,8 @@ import { WebinarService } from '../../../services/webinar.service';
 import { ConfirmationService } from 'primeng/api';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { Webinar } from '../../../../interfaces';
+import { USER_TYPE } from '../../../../shared/enum';
+import { AuthService } from '../../../../authentication/auth.service';
 
 @Component({
   selector: 'app-list',
@@ -30,10 +32,13 @@ export class ListComponent {
   webinarService = inject(WebinarService);
   confirmationService = inject(ConfirmationService);
   toastService = inject(ToastService);
+  authService = inject(AuthService);
 
   selectedItem: Webinar | undefined;
   openEdit = false;
   openCreate = false;
+
+  USER_TYPE = USER_TYPE;
 
   editModal(item: Webinar) {
     this.openEdit = true;

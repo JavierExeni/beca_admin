@@ -1,7 +1,7 @@
 <head-card
   title="Listado de profesores"
   buttonLabel="Registrar"
-  (click)="openCreate = !openCreate"
+  [(isClicked)]="openCreate"
 ></head-card>
 <div
   class="rounded-sm border border-light-gray bg-white px-5 pb-2.5 pt-6 shadow-sm drop-shadow-md sm:px-7 xl:pb-1"

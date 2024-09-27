@@ -1,15 +1,20 @@
-import { Client, Language, Level, Teacher, Test } from '.';
+import { Client, Language, Level, Teacher, Test, Topic } from '.';
 
 
 export type Course = {
   id: number;
   title: string;
+  level_name: string;
+  language_name: string;
+  language_flag: string;
+  teacher_name: string;
   time_duration: number;
   is_active: boolean;
   clients_enrolled: Client[];
   profesor_owned: Teacher[];
   test: Test;
   level: Level;
+  topics?: Topic[];
   language: Language;
   created_by: Teacher;
 };

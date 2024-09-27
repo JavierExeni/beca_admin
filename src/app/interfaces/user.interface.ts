@@ -6,6 +6,7 @@ export type User = {
   first_name: string;
   last_name: string;
   email: string;
+  user_type?: USER_TYPE | null;
 };
 
 export type Teacher = {
@@ -20,7 +21,7 @@ export type UserRequest = {
   user: Omit<User, 'id'> & { password: string };
   user_type: USER_TYPE;
   extra?: {
-    birthday: string;
+    birthdate: string;
     gender: number;
     city_id: number;
   };

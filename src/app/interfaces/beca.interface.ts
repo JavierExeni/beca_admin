@@ -11,6 +11,7 @@ export type Beca = {
   city: City;
   collage: University;
   is_active: boolean;
+  is_followed?: boolean;
   follow: User[];
 };
 

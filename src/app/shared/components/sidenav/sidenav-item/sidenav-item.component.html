@@ -1,5 +1,5 @@
 <a
-  [routerLink]="navOption().route"
+  [routerLink]="navOption().hasChildrens ? null : navOption().route"
   routerLinkActive="bg-opac-gray"
   (click)="toggleOptions = !toggleOptions"
   class="group cursor-pointer relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-light-gray duration-300 ease-in-out hover:bg-opac-gray"

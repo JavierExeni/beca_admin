@@ -1,0 +1,58 @@
+<div>
+  <p-accordion [activeIndex]="0">
+    @for (item of data().course.topics; track item.id; let index = $index) {
+    <p-accordionTab [iconPos]="'end'">
+      <ng-template pTemplate="header">
+        <p class="flex items-center gap-1">
+          <span> Curso {{ index + 1 }} </span>
+          <span>
+            {{ item.title }}
+          </span>
+        </p>
+      </ng-template>
+      <div>
+        <ul class="rounded overflow-hidden">
+          @for (lesson of item.lessons; track lesson.id; let lessonIndex =
+          $index) {
+          <li
+            [routerLink]="[
+              '/public/cursos/' + item.course + '/tema/' + item.id  + '/leccion/' + lesson.id
+            ]"
+            class="px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-light-gray transition-all duration-300 ease-in-out cursor-pointer"
+          >
+            <div class="flex justify-between items-center gap-3">
+              <p class="flex items-center gap-3">
+                <span
+                  class="bg-blue-500 w-7 h-7 rounded-full text-white flex justify-center items-center font-semibold"
+                >
+                  {{ lessonIndex + 1 }}
+                </span>
+                <span> Lección {{ lesson.title }} </span>
+              </p>
+              <i
+                [ngClass]="{
+                  'fa-square-check text-green-500': lesson.is_viewed,
+                  'fa-eye text-blue-500': !lesson.is_viewed
+                }"
+                class="fa-regular text-xl"
+              ></i>
+            </div>
+          </li>
+          }
+        </ul>
+      </div>
+    </p-accordionTab>
+    }
+  </p-accordion>
+  @if (data().course.test) {
+    <p-button
+    [routerLink]="['/public/evaluation', data().course.test.id]"
+      styleClass="mt-3 flex items-center gap-2 font-semibold"
+    >
+      <span>
+        <i class="fa-solid fa-book"></i>
+      </span>
+      <span> Examen del curso: {{ data().course.test.title }} </span>
+    </p-button>
+  }
+</div>

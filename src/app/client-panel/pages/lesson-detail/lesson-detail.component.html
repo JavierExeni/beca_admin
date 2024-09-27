@@ -1,0 +1,65 @@
+<p-breadcrumb class="max-w-full" [model]="items">
+  <ng-template pTemplate="item" let-item>
+    @if (item.route) {
+    <a [routerLink]="item.route" class="p-menuitem-link">
+      <i [ngClass]="[item.icon ? item.icon : '', 'text-[#334155]']"></i>
+      <span class="text-[#334155]">{{ item.label }}</span>
+    </a>
+    }@else {
+    <a [href]="item.url">
+      <span class="font-semibold text-blue-500">{{ item.label }}</span>
+    </a>
+    }
+  </ng-template>
+</p-breadcrumb>
+
+@if (data$ | async; as data) {
+<div class="grid grid-cols-[auto_1fr] gap-5">
+  <div
+    class="rounded-sm border border-light-gray bg-white px-5 py-6 shadow-sm drop-shadow-md sm:px-7 mb-5"
+  >
+    <h1 class="text-xl font-semibold mb-3">Lista de lecciones</h1>
+    <app-lesson-list [data]="data"></app-lesson-list>
+  </div>
+
+  <div
+    class="rounded-sm border border-light-gray bg-white px-5 py-6 shadow-sm drop-shadow-md sm:px-7 mb-5"
+  >
+    <youtube-player
+      class="block youtube-frame"
+      [videoId]="data.lesson.youtube_code"
+      (stateChange)="videoClic($event, data.lesson.id, data.course.id)"
+    />
+
+    <!-- <div class="flex justify-between items-center mt-5">
+      <p-button styleClass="flex items-center gap-3">
+        <span>
+          <i class="fa-solid fa-arrow-left"></i>
+        </span>
+        <span>Anterior</span>
+      </p-button>
+      <p-button styleClass="flex items-center gap-3">
+        <span>Siguiente</span>
+        <span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </span>
+      </p-button>
+    </div> -->
+  </div>
+</div>
+
+<div class="grid grid-cols-2 gap-5">
+  <div
+    class="rounded-sm border border-light-gray bg-white px-5 py-6 shadow-sm drop-shadow-md sm:px-7 mb-5"
+  >
+    <h1 class="text-xl font-semibold mb-3">{{ data.lesson.title }}</h1>
+    <p [innerHTML]="data.lesson.description"></p>
+  </div>
+
+  <div
+    class="rounded-sm border border-light-gray bg-white px-5 py-6 shadow-sm drop-shadow-md sm:px-7 mb-5"
+  >
+    <app-comments-box></app-comments-box>
+  </div>
+</div>
+}

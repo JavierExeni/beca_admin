@@ -1,4 +1,15 @@
+@if (title() && show()) {
 <div class="flex items-center justify-between mb-6">
+  @if (title()) {
   <h1 class="text-regular-black font-bold text-2xl">{{ title() }}</h1>
-  <p-button [label]="buttonLabel()" [routerLink]="route()" [outlined]="true" size="small" />
+  } @if (showButton()) {
+  <p-button
+    (onClick)="isClicked.set(!isClicked())"
+    [label]="buttonLabel()"
+    [routerLink]="route()"
+    [outlined]="true"
+    size="small"
+  />
+  }
 </div>
+}

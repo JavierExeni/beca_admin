@@ -22,19 +22,9 @@ export const PARAMETER_ROUTES: Route[] = [
       import('./level/list/list.component').then((c) => c.ListComponent),
   },
   {
-    path: 'temas',
+    path: 'cursos',
     loadComponent: () =>
-      import('./topic/list/list.component').then((c) => c.ListComponent),
-  },
-  {
-    path: 'lecciones',
-    loadComponent: () =>
-      import('./lesson/list/list.component').then((c) => c.ListComponent),
-  },
-  {
-    path: 'evaluaciones',
-    loadComponent: () =>
-      import('./test/list/list.component').then((c) => c.ListComponent),
+      import('./course/list/list.component').then((c) => c.ListComponent),
   },
   {
     path: '',

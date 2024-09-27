@@ -1,3 +1,5 @@
+@import "primeicons/primeicons.css";
+
 @layer tailwind-base, primeng, tailwind-utilities;
 
 @layer tailwind-base {
@@ -24,4 +26,24 @@
 
 .form-element label {
   margin-bottom: 5px;
+}
+
+.youtube-frame {
+  width: 100%;
+  height: 100%;
+}
+
+.youtube-player-placeholder {
+  width: 100% !important;
+  height: 700px !important;
+}
+
+iframe {
+  width: 100%;
+  height: 700px;
+}
+
+.p-breadcrumb {
+  background: transparent;
+  border: none;
 }

@@ -54,17 +54,34 @@ export class UserService {
     this.getClients().subscribe();
   }
 
+  loadAdmins() {
+    this.changeLoadingState(true);
+    this.getAdmins().subscribe();
+  }
+
   loadTeachers() {
     this.changeLoadingState(true);
     this.getTeachers().subscribe();
   }
 
-  constructor() {
-    this.loadClients();
-  }
+  constructor() {}
 
   getClients() {
-    const url = `${this.baseUrl}users/`;
+    const url = `${this.baseUrl}clients/`;
+    return this.http.get<Client[]>(url).pipe(
+      tap((clients) => {
+        this.changeLoadingState(false);
+        this.changeClientListState(clients);
+      }),
+      catchError(() => {
+        this.changeLoadingState(false);
+        return EMPTY;
+      })
+    );
+  }
+
+  getAdmins() {
+    const url = `${this.baseUrl}admins/`;
     return this.http.get<Client[]>(url).pipe(
       tap((clients) => {
         this.changeLoadingState(false);

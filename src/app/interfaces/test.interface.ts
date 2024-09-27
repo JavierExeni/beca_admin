@@ -1,3 +1,5 @@
+import { Course } from './course.interface';
+import { Question } from './question.interface';
 import { Client } from './user.interface';
 
 export type Test = {
@@ -7,6 +9,8 @@ export type Test = {
   created_at: string;
   passingScorePercentage: number;
   clients_taken: Client[];
+  course?: Course;
+  questions?: Question[]
 };
 
 export type TestRequest = Omit<Test, 'id' | 'clients_taken'> & {

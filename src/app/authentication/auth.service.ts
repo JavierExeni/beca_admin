@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { AuthDecoded, AuthResponse, LoginRequest, User } from '../interfaces';
 import { environment } from '../../environments/environment.development';
-import { concatMap, Observable, tap } from 'rxjs';
+import { concatMap, map, Observable, tap } from 'rxjs';
 
 import { jwtDecode } from 'jwt-decode';
 import { PersistanceService } from '../shared/services/persistance.service';
@@ -81,7 +81,12 @@ export class AuthService {
         this.changeRoleState(decoded.user_role);
         this.persistanceService.set('accessToken', access);
         this.persistanceService.set('currentRole', decoded.user_role);
-        return this.userService.getUser(decoded.user_id);
+        return this.userService.getUser(decoded.user_id).pipe(
+          map((user) => {
+            console.log(user)
+            return { ...user, user_type: this.role() };
+          })
+        );
       }),
       tap((user) => {
         this.changeLoadingState(false);

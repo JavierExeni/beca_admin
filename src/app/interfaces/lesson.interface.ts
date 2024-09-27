@@ -9,6 +9,7 @@ export type Lesson = {
   youtube_code: string;
   topic: Topic;
   viewed: Client[];
+  is_viewed?: boolean;
 };
 
 export type LessonRequest = Omit<Lesson, 'id'> & {

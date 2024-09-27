@@ -13,6 +13,7 @@ import { CityService } from '../../../services';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { User, UserRequest } from '../../../../interfaces';
 import { GENDER, USER_TYPE } from '../../../../shared/enum';
+import { AuthService } from '../../../../authentication/auth.service';
 
 @Component({
   selector: 'app-teacher-form',
@@ -32,7 +33,7 @@ import { GENDER, USER_TYPE } from '../../../../shared/enum';
 export class TeacherFormComponent {
   fb = inject(FormBuilder);
   userService = inject(UserService);
-  cityService = inject(CityService);
+  authService = inject(AuthService);
   toastService = inject(ToastService);
 
   public selectedItem = input<User>();
@@ -51,9 +52,6 @@ export class TeacherFormComponent {
     first_name: ['', Validators.required],
     last_name: ['', Validators.required],
     email: ['', Validators.required],
-    birthday: ['', Validators.required],
-    gender: ['', Validators.required],
-    city_id: ['', Validators.required],
   });
 
   ngOnChanges(_: SimpleChanges): void {
@@ -76,6 +74,7 @@ export class TeacherFormComponent {
       },
       user_type: USER_TYPE.TEACHER,
       extra_fields: {
+        user_id: this.authService.currentLoggedUser().id,
         ...dataForm,
       },
     };

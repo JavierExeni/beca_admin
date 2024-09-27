@@ -1,0 +1,14 @@
+<div class="flex h-screen overflow-hidden">
+  <app-sidenav></app-sidenav>
+  <div class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden bg-light-blue">
+    <app-toolbar></app-toolbar>
+    <main class="h-full">
+      <div class="mx-auto h-full max-w-screen-2xl p-4 md:p-6 2xl:px-10 2xl:py-5">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+  </div>
+</div>
+@for (item of toastService.toasts(); track $index) {
+  <p-toast [position]="item.position" [key]="item.key" (onClose)="toastService.closeToast(item.key)"></p-toast>
+}

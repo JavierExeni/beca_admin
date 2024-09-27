@@ -3,10 +3,15 @@ import { authGuard } from './shared/guards/auth.guard';
 
 export const routes: Routes = [
   {
-    path: '',
+    path: 'admin',
     canActivateChild: [authGuard],
     loadChildren: () =>
       import('./admin/admin.routes').then((m) => m.ADMIN_ROUTES),
+  },
+  {
+    path: 'public',
+    loadChildren: () =>
+      import('./client-panel/client.routes').then((m) => m.CLIENT_ROUTES),
   },
   {
     path: 'login',

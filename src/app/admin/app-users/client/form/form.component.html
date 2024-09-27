@@ -4,10 +4,12 @@
       <label for="client-username">Nombre de usuario</label>
       <input type="text" pInputText formControlName="username" />
     </div>
+    @if (!isEdit()) {
     <div class="form-element">
       <label for="client-password">Contraseña</label>
       <input type="text" pInputText formControlName="password" />
     </div>
+    }
     <div class="form-element">
       <label for="client-first-name">Nombres</label>
       <input type="text" pInputText formControlName="first_name" />
@@ -22,7 +24,7 @@
     </div>
     <div class="form-element">
       <label for="client-birthday">Fecha de Nacimiento</label>
-      <p-calendar id="birthday" formControlName="birthday" />
+      <p-calendar id="birthday" formControlName="birthdate" />
     </div>
     <div class="form-element">
       <label for="client-birthday">Genero</label>

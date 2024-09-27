@@ -1,0 +1,88 @@
+<div
+  class="rounded-sm border border-light-gray bg-white px-5 py-6 shadow-sm drop-shadow-md sm:px-7 mb-5"
+>
+  <h1 class="text-3xl font-semibold mb-3">Selección de becas</h1>
+  <p class="lg:max-w-[80%]">
+    Búsca becas de diplomados, doctorados, entre otros, que en su nombre
+    contengan palabras clave sobre tus intereses de estudio.
+  </p>
+  <br />
+  <p-inputGroup>
+    <input type="text" pInputText />
+    <button type="button" pButton label="Búscar"></button>
+  </p-inputGroup>
+</div>
+
+<div class="flex flex-wrap gap-4">
+  @for (item of becaService.becas(); track $index) {
+  <div
+    class="flex items-center rounded-sm border border-light-gray bg-white p-4 shadow-sm drop-shadow-md sm:flex-row flex-col w-full max-w-[400px]"
+  >
+    <div class="flex-grow sm:text-left text-center mt-6 sm:mt-0">
+      <h1
+        class="text-black text-2xl title-font font-bold mb-2 flex justify-between items-center"
+      >
+        <span>
+          {{ item.name }}
+        </span>
+        <span (click)="changeFollowStateBeca(item)" class="cursor-pointer">
+          <i
+            [ngClass]="{
+              'fa-solid': item.is_followed,
+              'fa-regular': !item.is_followed
+            }"
+            class="fa-star text-blue-400"
+          ></i>
+        </span>
+      </h1>
+      <p class="leading-relaxed text-base">
+        {{ item.collage.name }}
+      </p>
+      <div class="py-4 grid gap-4">
+        <div class="inline-block mr-6">
+          <div class="flex pr-2 h-full items-center gap-3">
+            <span
+              class="bg-blue-400 flex items-center justify-center w-8 h-8 rounded-full"
+            >
+              <i class="fa-regular fa-clock text-white"></i>
+            </span>
+            <p class="title-font font-medium">{{ item.duration_per_days }}</p>
+          </div>
+        </div>
+        <div class="inline-block mr-2">
+          <div class="flex pr-2 h-full items-center gap-3">
+            <span
+              class="bg-blue-400 flex items-center justify-center w-8 h-8 rounded-full"
+            >
+              <i class="fa-regular fa-calendar text-white"></i>
+            </span>
+            <p class="title-font font-medium">
+              {{ item.begin | date : "dd-MM-yyyy hh:mm" }}
+            </p>
+          </div>
+        </div>
+        <div class="inline-block mr-2 cursor-pointer">
+          <a [href]="item.collage!.google_map_code | googleMapFormatCode" target="_blank" class="flex pr-2 h-full items-center gap-3">
+            <span
+              class="bg-blue-400 flex items-center justify-center w-8 h-8 rounded-full"
+            >
+              <i class="fa-solid fa-location-dot text-white"></i>
+            </span>
+            <p class="title-font font-medium">Abrir mapa</p>
+          </a>
+        </div>
+        <div class="inline-block cursor-pointer">
+          <a class="flex pr-2 h-full items-center gap-3" [href]="item.collage!.web_site" target="_blank">
+            <span
+              class="bg-blue-400 flex items-center justify-center w-8 h-8 rounded-full"
+            >
+              <i class="fa-solid fa-globe text-white"></i>
+            </span>
+            <p class="title-font font-medium">Sitio web</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+</div>

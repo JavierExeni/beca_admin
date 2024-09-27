@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { TopicFormComponent } from '../form/form.component';
 import { HeadCardComponent } from '../../../../shared/components/head-card/head-card.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -9,10 +9,11 @@ import { ButtonModule } from 'primeng/button';
 import { TopicService } from '../../../services';
 import { ConfirmationService } from 'primeng/api';
 import { ToastService } from '../../../../shared/services/toast.service';
-import { Topic } from '../../../../interfaces';
+import { Course, Topic } from '../../../../interfaces';
+import { LessonListComponent } from '../../lesson/list/list.component';
 
 @Component({
-  selector: 'app-list',
+  selector: 'app-topic-list',
   standalone: true,
   imports: [
     ButtonModule,
@@ -22,11 +23,14 @@ import { Topic } from '../../../../interfaces';
     ConfirmDialogModule,
     HeadCardComponent,
     TopicFormComponent,
+    LessonListComponent,
   ],
   templateUrl: './list.component.html',
   styles: ``,
 })
-export class ListComponent {
+export class TopicListComponent {
+  topics = input.required<Topic[]>();
+  course = input.required<Course>();
   topicService = inject(TopicService);
   confirmationService = inject(ConfirmationService);
   toastService = inject(ToastService);
@@ -34,6 +38,7 @@ export class ListComponent {
   selectedItem: Topic | undefined;
   openEdit = false;
   openCreate = false;
+  openLessons = false;
 
   editModal(item: Topic) {
     this.openEdit = true;
@@ -63,10 +68,11 @@ export class ListComponent {
               'Error al eliminar el Tema.'
             );
           },
-          complete: () => this.topicService.loadTopics(),
+          complete: () =>
+            this.topicService.loadTopicsByCourse(this.course().id),
         });
       },
-      key: 'confirmDialog',
+      key: 'confirmDialogtopic',
     });
   }
 }

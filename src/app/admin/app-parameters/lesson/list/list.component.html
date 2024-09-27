@@ -1,87 +1,95 @@
 <head-card
-  title="Listado de ciudades"
   buttonLabel="Registrar"
-  (click)="openCreate = !openCreate"
+  [show]="false"
+  [(isClicked)]="openCreate"
 ></head-card>
-<div
-  class="rounded-sm border border-light-gray bg-white px-5 pb-2.5 pt-6 shadow-sm drop-shadow-md sm:px-7 xl:pb-1"
->
-  <p-table
-    [value]="lessonService.lessons()"
-    [paginator]="true"
-    [rows]="5"
-    [tableStyle]="{ 'min-width': '50rem' }"
-    [rowsPerPageOptions]="[5, 10, 20]"
+<div class="flex gap-3">
+  <div
+    class="rounded-sm border border-light-gray bg-white px-5 pb-2.5 pt-6 shadow-sm drop-shadow-md sm:px-7 xl:pb-1"
   >
-    <ng-template pTemplate="header">
-      <tr>
-        <th>Titulo</th>
-        <th>Orden</th>
-        <th>Tema</th>
-        <th>YouTube Link</th>
-        <th class="text-center">Acciones</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-item>
-      <tr>
-        <td>{{ item.title }}</td>
-        <td>{{ item.order }}</td>
-        <td>{{ item.topic }}</td>
-        <td>
-          <a
-            [href]="'https://www.youtube.com/watch?v=' + item.youtube_code"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-[#2563eb] hover:border-b border-b-[#2563eb]"
-            >Ver video</a
-          >
-        </td>
-        <td>
-          <div class="flex justify-center">
-            <button
-              pButton
-              pRipple
-              type="button"
-              class="p-button-text"
-              (click)="op.toggle($event)"
+    <p-table
+      [value]="lessonService.lessons()"
+      [paginator]="true"
+      [rows]="5"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      [rowsPerPageOptions]="[5, 10, 20]"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Titulo</th>
+          <th>Orden</th>
+          <th>Tema</th>
+          <th>YouTube Link</th>
+          <th class="text-center">Acciones</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item>
+        <tr>
+          <td>{{ item.title }}</td>
+          <td>{{ item.order }}</td>
+          <td>{{ item.topic }}</td>
+          <td>
+            <a
+              [href]="'https://www.youtube.com/watch?v=' + item.youtube_code"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-[#2563eb] hover:border-b border-b-[#2563eb]"
+              >Ver video</a
             >
-              <i class="fa-solid fa-gear"></i>
-            </button>
-            <p-overlayPanel styleClass="paralex-overlay" appendTo="body" #op>
-              <ng-template pTemplate="content">
-                <div class="flex flex-col">
-                  <button
-                    pButton
-                    pRipple
-                    type="button"
-                    label="Editar"
-                    class="p-button-text p-button-sm text-start"
-                    (click)="editModal(item)"
-                  ></button>
-                  <button
-                    pButton
-                    pRipple
-                    type="button"
-                    label="Añadir recurso"
-                    class="p-button-text p-button-sm text-start"
-                  ></button>
+          </td>
+          <td>
+            <div class="flex justify-center">
+              <button
+                pButton
+                pRipple
+                type="button"
+                class="p-button-text"
+                (click)="op.toggle($event)"
+              >
+                <i class="fa-solid fa-gear"></i>
+              </button>
+              <p-overlayPanel styleClass="paralex-overlay" appendTo="body" #op>
+                <ng-template pTemplate="content">
+                  <div class="flex flex-col">
+                    <button
+                      pButton
+                      pRipple
+                      type="button"
+                      label="Editar"
+                      class="p-button-text p-button-sm text-start"
+                      (click)="editModal(item)"
+                    ></button>
+                    <button
+                      pButton
+                      pRipple
+                      type="button"
+                      label="Añadir recurso"
+                      class="p-button-text p-button-sm text-start"
+                    ></button>
 
-                  <button
-                    pButton
-                    pRipple
-                    type="button"
-                    label="Eliminar"
-                    class="p-button-danger p-button-text p-button-sm text-start"
-                    (click)="delete(item.id)"
-                  ></button>
-                </div>
-              </ng-template>
-            </p-overlayPanel>
-          </div>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
+                    <button
+                      pButton
+                      pRipple
+                      type="button"
+                      label="Eliminar"
+                      class="p-button-danger p-button-text p-button-sm text-start"
+                      (click)="delete(item.id)"
+                    ></button>
+                  </div>
+                </ng-template>
+              </p-overlayPanel>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <div
+    class="rounded-sm border border-light-gray bg-white px-5 py-6 shadow-sm drop-shadow-md sm:px-7"
+  >
+    <app-lesson-form (modalState)="openCreate = $event" [topic]="topic()"></app-lesson-form>
+  </div>
 </div>
 
 <!-- Dialogs -->
@@ -97,23 +105,13 @@
     [selectedItem]="selectedItem"
     [isEdit]="true"
     (modalState)="openEdit = $event"
+    [topic]="topic()"
   ></app-lesson-form>
-</p-dialog>
-
-<p-dialog
-  header="Crear Lección"
-  [(visible)]="openCreate"
-  [modal]="true"
-  [style]="{ width: '500px' }"
-  [draggable]="false"
-  [resizable]="false"
->
-  <app-lesson-form (modalState)="openCreate = $event"></app-lesson-form>
 </p-dialog>
 
 <p-confirmDialog
   [style]="{ width: '500px' }"
-  key="confirmDialog"
+  key="confirmDialogLesson"
   position="top"
   rejectButtonStyleClass="p-button-outlined"
 ></p-confirmDialog>

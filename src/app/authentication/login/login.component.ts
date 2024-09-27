@@ -9,6 +9,7 @@ import { AuthService } from '../auth.service';
 import { MessageService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
 import { ButtonModule } from 'primeng/button';
+import { USER_TYPE } from '../../shared/enum';
 
 @Component({
   selector: 'app-login',
@@ -33,8 +34,21 @@ export class LoginComponent {
     const data: LoginRequest = this.form.getRawValue();
     this.authService.login(data).subscribe({
       next: (res) => {
-        console.log(res)
-        this.router.navigateByUrl('');
+        console.log(res);
+        switch (res.user_type) {
+          case USER_TYPE.ADMIN:
+            console.log('ADMIN');
+            this.router.navigate(['/admin/usuarios/']);
+            break;
+          case USER_TYPE.TEACHER:
+            console.log('TEACHER');
+            this.router.navigate(['/admin/parametros/']);
+            break;
+          case USER_TYPE.CLIENT:
+            console.log('CLIENT');
+            this.router.navigate(['/public/webinars/']);
+            break;
+        }
       },
       error: (err: HttpErrorResponse) => {
         console.log(err);

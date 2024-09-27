@@ -13,6 +13,8 @@ import { ToastService } from '../../../../shared/services/toast.service';
 import { Client, User, UserRequest } from '../../../../interfaces';
 import { GENDER, USER_TYPE } from '../../../../shared/enum';
 import { CityService } from '../../../services';
+import { AuthService } from '../../../../authentication/auth.service';
+import { DateService } from '../../../../shared/services/date.service';
 
 @Component({
   selector: 'app-client-form',
@@ -32,10 +34,12 @@ import { CityService } from '../../../services';
 export class ClientFormComponent {
   fb = inject(FormBuilder);
   userService = inject(UserService);
+  authService = inject(AuthService);
   cityService = inject(CityService);
   toastService = inject(ToastService);
+  dateService = inject(DateService);
 
-  public selectedItem = input<User>();
+  public selectedItem = input<any>();
   public isEdit = input(false);
   public modalState = output<boolean>();
 
@@ -51,7 +55,7 @@ export class ClientFormComponent {
     first_name: ['', Validators.required],
     last_name: ['', Validators.required],
     email: ['', Validators.required],
-    birthday: ['', Validators.required],
+    birthdate: ['', Validators.required],
     gender: ['', Validators.required],
     city_id: ['', Validators.required],
   });
@@ -60,23 +64,29 @@ export class ClientFormComponent {
     if (this.isEdit() && this.selectedItem()) {
       const data = this.selectedItem();
       this.form.patchValue({
-        username: data!.username,
-        first_name: data!.first_name,
-        last_name: data!.last_name,
-        email: data!.email,
+        username: data.user.username,
+        first_name: data.user.first_name,
+        last_name: data.user.last_name,
+        email: data.user.email,
+        birthdate: data.birthdate,
+        gender: data.gender,
+        city_id: data.city_id,
       });
     }
   }
 
   onSubmit() {
     const dataForm = this.form.getRawValue() as any;
+    const birthdate = this.dateService.formatDate(dataForm.birthdate);
     const data = {
       user: {
         ...dataForm,
+        birthdate,
       },
       user_type: USER_TYPE.CLIENT,
       extra_fields: {
         ...dataForm,
+        birthdate,
       },
     };
     if (this.isEdit()) {
@@ -111,7 +121,7 @@ export class ClientFormComponent {
   }
 
   onUpdate(data: UserRequest) {
-    this.userService.update(this.selectedItem()!.id, data).subscribe({
+    this.userService.update(this.selectedItem().user.id, data).subscribe({
       next: () => {
         this.toastService.showToast(
           'top-right',

@@ -4,7 +4,7 @@ import { NgIf } from '@angular/common';
 
 import { TopicService } from '../../../services';
 import { ToastService } from '../../../../shared/services/toast.service';
-import { Topic, TopicRequest } from '../../../../interfaces';
+import { Course, Topic, TopicRequest } from '../../../../interfaces';
 import { CourseService } from '../../../services/course.service';
 
 import { ButtonModule } from 'primeng/button';
@@ -27,6 +27,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
   styles: ``,
 })
 export class TopicFormComponent {
+  course = input.required<Course>();
   fb = inject(FormBuilder);
   topicService = inject(TopicService);
   courseService = inject(CourseService);
@@ -53,11 +54,12 @@ export class TopicFormComponent {
   }
 
   onSubmit() {
-    const data = this.form.getRawValue() as any;
+    const formValue = this.form.getRawValue() as any;
+    const data = {
+      ...formValue,
+      course: this.course().id,
+    };
     if (this.isEdit()) {
-      if (typeof data.svg_flag == 'string') {
-        delete data.svg_flag;
-      }
       this.onUpdate(data);
       return;
     }
@@ -84,7 +86,7 @@ export class TopicFormComponent {
         );
         this.modalState.emit(false);
       },
-      complete: () => this.topicService.loadTopics(),
+      complete: () => this.topicService.loadTopicsByCourse(this.course().id),
     });
   }
 
@@ -108,7 +110,7 @@ export class TopicFormComponent {
         );
         this.modalState.emit(false);
       },
-      complete: () => this.topicService.loadTopics(),
+      complete: () => this.topicService.loadTopicsByCourse(this.course().id),
     });
   }
 }

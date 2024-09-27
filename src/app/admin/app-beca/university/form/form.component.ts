@@ -65,6 +65,7 @@ export class UniversityFormComponent {
 
   onSubmit() {
     const data = this.form.getRawValue() as any;
+    console.log(data)
     if (this.isEdit()) {
       this.onUpdate(data);
       return;

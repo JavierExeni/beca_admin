@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
@@ -21,21 +21,25 @@ import { Client, User } from '../../../../interfaces';
     OverlayPanelModule,
     ConfirmDialogModule,
     HeadCardComponent,
-    ClientFormComponent
+    ClientFormComponent,
   ],
   templateUrl: './list.component.html',
-  styles: ``
+  styles: ``,
 })
-export class ListComponent {
-  userService= inject(UserService);
+export class ListComponent implements OnInit {
+  userService = inject(UserService);
   confirmationService = inject(ConfirmationService);
   toastService = inject(ToastService);
 
-  selectedItem: User | undefined;
+  selectedItem: any | undefined;
   openEdit = false;
   openCreate = false;
 
-  editModal(item: User) {
+  ngOnInit(): void {
+    this.userService.loadClients();
+  }
+
+  editModal(item: Client) {
     this.openEdit = true;
     this.selectedItem = item;
   }

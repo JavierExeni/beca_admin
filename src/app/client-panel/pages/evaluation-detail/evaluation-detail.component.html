@@ -1,0 +1,56 @@
+<div
+  class="rounded-sm border border-light-gray bg-white px-5 py-6 shadow-sm drop-shadow-md sm:px-7 mb-5 max-w-[800px]"
+>
+  @if (data$ | async; as data) { @let currentQuestion = data.questions![index];
+  @let questionsLength = data.questions!.length;
+  <div>
+    <h1 class="text-3xl font-semibold mb-3">
+      Examen Grado {{ data.course?.level_name }}
+    </h1>
+    <!-- <p>Pregunta</p> -->
+  </div>
+
+  <p>{{ currentQuestion.question }}</p>
+
+  <div class="grid grid-cols-3 my-7">
+    @for (item of data.questions![index].options; track $index; let i = $index)
+    {
+    <div
+      (click)="addAnswer(item.id, currentQuestion.id)"
+      [ngClass]="{
+        'border-green-500': selectedOption(item.id) == item.id,
+        'border-gray': selectedOption(item.id) != item.id
+      }"
+      class="border-2 bg-light-gray rounded-xl hover:border-dark-purple p-4 cursor-pointer bg-gray-100 mx-5 mb-5 flex items-center gap-3"
+    >
+      <span
+        [ngClass]="{
+          'bg-green-500': selectedOption(item.id) == item.id,
+          'bg-blue-500': selectedOption(item.id) != item.id
+        }"
+        class="text-white rounded-full w-7 h-7 flex justify-center items-center font-bold"
+        >{{ i + 1 }}</span
+      >
+      <span class="font-semibold">{{ item.possible_answer }}</span>
+    </div>
+    }
+  </div>
+  <div
+    [ngClass]="{ 'justify-end': index == 0, 'justify-between': index != 0 }"
+    class="flex items-center"
+  >
+    @if (index != 0) {
+    <p-button (onClick)="index = index - 1" label="Anterior" />
+    } @if (index + 1 != questionsLength) {
+    <p-button (onClick)="index = index + 1" label="Siguiente" />
+    } @if (index + 1 == questionsLength) {
+    <p-button
+      [disabled]="isFinalized(questionsLength)"
+      (onClick)="send(data.course!.id)"
+      label="Finalizar"
+      severity="success"
+    />
+    }
+  </div>
+  }
+</div>

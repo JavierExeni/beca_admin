@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { Beca, BecaRequest } from '../../interfaces';
-import { catchError, EMPTY, Observable, tap } from 'rxjs';
+import { catchError, concatMap, EMPTY, Observable, tap } from 'rxjs';
 
 interface State {
   becas: Beca[];
@@ -10,7 +10,7 @@ interface State {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BecaService {
   http = inject(HttpClient);
@@ -44,12 +44,31 @@ export class BecaService {
     this.getBecas().subscribe();
   }
 
+  loadActiveBecas() {
+    this.changeLoadingState(true);
+    this.getActiveBecas().subscribe();
+  }
+
   constructor() {
     this.loadBecas();
   }
 
   getBecas() {
     const url = `${this.baseUrl}`;
+    return this.http.get<Beca[]>(url).pipe(
+      tap((becas) => {
+        this.changeLoadingState(false);
+        this.changeListState(becas);
+      }),
+      catchError(() => {
+        this.changeLoadingState(false);
+        return EMPTY;
+      })
+    );
+  }
+
+  getActiveBecas() {
+    const url = `${this.baseUrl}user/scholarships/`;
     return this.http.get<Beca[]>(url).pipe(
       tap((becas) => {
         this.changeLoadingState(false);
@@ -86,5 +105,12 @@ export class BecaService {
     this.changeLoadingState(true);
     const url = `${this.baseUrl}${id}/`;
     return this.http.delete(url);
+  }
+
+  followOrUnfollow(scholarshipId: number): Observable<Beca[]> {
+    const url = `${this.baseUrl}${scholarshipId}/follow/`;
+    return this.http
+      .get<Beca[]>(url)
+      .pipe(concatMap(() => this.getActiveBecas()));
   }
 }

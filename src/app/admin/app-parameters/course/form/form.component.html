@@ -1,0 +1,70 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <fieldset class="grid grid-cols-1 gap-4">
+    <div class="form-element">
+      <label for="client-username">Titulo</label>
+      <input type="text" pInputText formControlName="title" />
+    </div>
+    <div class="form-element">
+      <label for="lenguaje">Lenguaje</label>
+      <p-dropdown
+        id="lenguaje"
+        formControlName="language"
+        [options]="languageService.languages()"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Seleccionar"
+        appendTo="body"
+      />
+    </div>
+    <div class="form-element">
+      <label for="nivel">Nivel</label>
+      <p-dropdown
+        id="nivel"
+        formControlName="level"
+        [options]="levelService.levels()"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Seleccionar"
+        appendTo="body"
+      />
+    </div>
+    <div class="form-element">
+      <label for="teachers">Asignar profesores</label>
+
+      <p-multiSelect
+        id="teachers"
+        formControlName="profesor_owned"
+        [options]="teachers"
+        optionLabel="full_name"
+        optionValue="id"
+        placeholder="Seleccionar"
+        appendTo="body"
+      />
+    </div>
+    <div class="form-element">
+      <label for="client-password">Duración del curso (horas)</label>
+      <p-inputNumber
+        formControlName="time_duration"
+        mode="decimal"
+        inputId="withoutgrouping"
+        [useGrouping]="false"
+      />
+    </div>
+    <div class="form-element">
+      <p-toggleButton
+        formControlName="is_active"
+        onLabel="Activado"
+        offLabel="Desactivado"
+      />
+    </div>
+  </fieldset>
+  <div class="flex justify-end mt-4">
+    <p-button
+      aria-label="submit button"
+      type="submit"
+      size="small"
+      [label]="isEdit() ? 'Actualizar' : 'Registrar'"
+      [loading]="courseService.isLoading()"
+    />
+  </div>
+</form>

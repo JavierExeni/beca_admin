@@ -7,7 +7,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { LessonService, TopicService } from '../../../services';
 import { ToastService } from '../../../../shared/services/toast.service';
-import { Lesson, LessonRequest } from '../../../../interfaces';
+import { Lesson, LessonRequest, Topic } from '../../../../interfaces';
 
 @Component({
   selector: 'app-lesson-form',
@@ -24,6 +24,7 @@ import { Lesson, LessonRequest } from '../../../../interfaces';
   styles: ``,
 })
 export class LessonFormComponent {
+  topic = input.required<Topic>();
   fb = inject(FormBuilder);
   lessonService = inject(LessonService);
   topicService = inject(TopicService);
@@ -37,29 +38,28 @@ export class LessonFormComponent {
     title: ['', Validators.required],
     description: ['', Validators.required],
     order: ['', Validators.required],
-    topic: ['', Validators.required],
     youtube_code: ['', Validators.required],
   });
 
   ngOnChanges(_: SimpleChanges): void {
     if (this.isEdit() && this.selectedItem()) {
-      console.log(this.selectedItem())
+      console.log(this.selectedItem());
       this.form.patchValue({
         title: this.selectedItem()!.title,
         description: this.selectedItem()!.description,
         youtube_code: this.selectedItem()!.youtube_code,
         order: this.selectedItem()!.order as any,
-        topic: this.selectedItem()!.topic as any,
       });
     }
   }
 
   onSubmit() {
-    const data = this.form.getRawValue() as any;
+    const formValue = this.form.getRawValue() as any;
+    const data = {
+      ...formValue,
+      topic: this.topic().id,
+    };
     if (this.isEdit()) {
-      if (typeof data.svg_flag == 'string') {
-        delete data.svg_flag;
-      }
       this.onUpdate(data);
       return;
     }
@@ -86,7 +86,7 @@ export class LessonFormComponent {
         );
         this.modalState.emit(false);
       },
-      complete: () => this.lessonService.loadlessons(),
+      complete: () => this.lessonService.loadlessonsByTopic(this.topic().id),
     });
   }
 
@@ -110,7 +110,7 @@ export class LessonFormComponent {
         );
         this.modalState.emit(false);
       },
-      complete: () => this.lessonService.loadlessons(),
+      complete: () => this.lessonService.loadlessonsByTopic(this.topic().id),
     });
   }
 }

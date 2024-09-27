@@ -1,4 +1,11 @@
-import { Component, inject } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { LessonFormComponent } from '../form/form.component';
 import { HeadCardComponent } from '../../../../shared/components/head-card/head-card.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -9,10 +16,10 @@ import { ButtonModule } from 'primeng/button';
 import { LessonService } from '../../../services';
 import { ConfirmationService } from 'primeng/api';
 import { ToastService } from '../../../../shared/services/toast.service';
-import { Lesson } from '../../../../interfaces';
+import { Lesson, Topic } from '../../../../interfaces';
 
 @Component({
-  selector: 'app-list',
+  selector: 'app-lesson-list',
   standalone: true,
   imports: [
     ButtonModule,
@@ -21,12 +28,13 @@ import { Lesson } from '../../../../interfaces';
     OverlayPanelModule,
     ConfirmDialogModule,
     HeadCardComponent,
-    LessonFormComponent
+    LessonFormComponent,
   ],
   templateUrl: './list.component.html',
-  styles: ``
+  styles: ``,
 })
-export class ListComponent {
+export class LessonListComponent implements OnChanges {
+  topic = input.required<Topic>();
   lessonService = inject(LessonService);
   confirmationService = inject(ConfirmationService);
   toastService = inject(ToastService);
@@ -34,6 +42,10 @@ export class ListComponent {
   selectedItem: Lesson | undefined;
   openEdit = false;
   openCreate = false;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.lessonService.loadlessonsByTopic(this.topic().id);
+  }
 
   editModal(item: Lesson) {
     this.openEdit = true;
@@ -63,10 +75,11 @@ export class ListComponent {
               'Error al eliminar la Lección.'
             );
           },
-          complete: () => this.lessonService.loadlessons(),
+          complete: () =>
+            this.lessonService.loadlessonsByTopic(this.topic().id),
         });
       },
-      key: 'confirmDialog',
+      key: 'confirmDialogLesson',
     });
   }
 }

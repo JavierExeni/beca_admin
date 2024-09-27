@@ -1,0 +1,40 @@
+<p-breadcrumb class="max-w-full" [model]="items">
+  <ng-template pTemplate="item" let-item>
+    @if (item.route) {
+    <a [routerLink]="item.route" class="p-menuitem-link">
+      <i [ngClass]="[item.icon ? item.icon : '', 'text-[#334155]']"></i>
+      <span class="text-[#334155]">{{ item.label }}</span>
+    </a>
+    }@else {
+    <a [href]="item.url">
+      <span class="font-semibold text-blue-500">{{ item.label }}</span>
+    </a>
+    }
+  </ng-template>
+</p-breadcrumb>
+@if (webinar$ | async; as data) {
+<div class="grid lg:grid-cols-[1fr_400px] gap-5">
+  <div>
+    <div
+      class="rounded-sm border border-light-gray bg-white px-5 py-6 shadow-sm drop-shadow-md sm:px-7 mb-5"
+    >
+      <youtube-player
+        class="block youtube-frame"
+        [videoId]="data.youtube_code"
+      />
+    </div>
+
+    <div
+      class="rounded-sm border border-light-gray bg-white px-5 py-6 shadow-sm drop-shadow-md sm:px-7 mb-5"
+    >
+      <h1 class="text-3xl font-semibold mb-3">{{ data.title }}</h1>
+      <p [innerHTML]="data.description"></p>
+    </div>
+  </div>
+  <div
+    class="rounded-sm border border-light-gray bg-white px-5 py-6 shadow-sm drop-shadow-md sm:px-7 mb-5"
+  >
+    <app-comments-box></app-comments-box>
+  </div>
+</div>
+}

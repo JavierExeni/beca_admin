@@ -21,17 +21,6 @@
       <label for="lesson-youtube">Código de YouTube</label>
       <input type="text" pInputText formControlName="youtube_code" />
     </div>
-    <div class="form-element">
-      <label for="upload">Tema</label>
-      <p-dropdown
-        formControlName="topic"
-        [options]="topicService.topics()"
-        optionLabel="title"
-        optionValue="id"
-        placeholder="Seleccionar"
-        appendTo="body"
-      />
-    </div>
   </fieldset>
   <div class="flex justify-end mt-4">
     <p-button

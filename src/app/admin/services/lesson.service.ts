@@ -9,9 +9,8 @@ interface State {
   loading: boolean;
 }
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LessonService {
   http = inject(HttpClient);
@@ -45,12 +44,32 @@ export class LessonService {
     this.getlessons().subscribe();
   }
 
-  constructor() {
-    this.loadlessons();
+  loadlessonsByTopic(id: number) {
+    this.changeLoadingState(true);
+    this.getLessonsByTopic(id).subscribe();
   }
 
   getlessons() {
     const url = `${this.baseUrl}`;
+    return this.http.get<Lesson[]>(url).pipe(
+      tap((lessons) => {
+        this.changeLoadingState(false);
+        this.changeListState(lessons);
+      }),
+      catchError(() => {
+        this.changeLoadingState(false);
+        return EMPTY;
+      })
+    );
+  }
+
+  getSingleLesson(id: number) {
+    const url = `${this.baseUrl}${id}/`;
+    return this.http.get<Lesson>(url);
+  }
+
+  getLessonsByTopic(id: number) {
+    const url = `${this.baseUrl}${id}/get-lessons-topic/`;
     return this.http.get<Lesson[]>(url).pipe(
       tap((lessons) => {
         this.changeLoadingState(false);
@@ -87,5 +106,10 @@ export class LessonService {
     this.changeLoadingState(true);
     const url = `${this.baseUrl}${id}/`;
     return this.http.delete(url);
+  }
+
+  addView(lessonId: number): Observable<Lesson> {
+    const url = `${this.baseUrl}${lessonId}/add-view/`;
+    return this.http.get<Lesson>(url);
   }
 }

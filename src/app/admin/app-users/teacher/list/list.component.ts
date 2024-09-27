@@ -69,7 +69,7 @@ export class ListComponent implements OnInit {
               'Error al eliminar el Profesor.'
             );
           },
-          complete: () => this.userService.loadClients(),
+          complete: () => this.userService.loadTeachers(),
         });
       },
       key: 'confirmDialog',
