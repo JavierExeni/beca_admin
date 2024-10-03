@@ -64,6 +64,7 @@
                       pRipple
                       type="button"
                       label="Añadir recurso"
+                      (click)="selectedItem = item; openRecurso = true"
                       class="p-button-text p-button-sm text-start"
                     ></button>
 
@@ -88,7 +89,10 @@
   <div
     class="rounded-sm border border-light-gray bg-white px-5 py-6 shadow-sm drop-shadow-md sm:px-7"
   >
-    <app-lesson-form (modalState)="openCreate = $event" [topic]="topic()"></app-lesson-form>
+    <app-lesson-form
+      (modalState)="openCreate = $event"
+      [topic]="topic()"
+    ></app-lesson-form>
   </div>
 </div>
 
@@ -107,6 +111,22 @@
     (modalState)="openEdit = $event"
     [topic]="topic()"
   ></app-lesson-form>
+</p-dialog>
+
+<p-dialog
+  header="Añadir Recurso"
+  [(visible)]="openRecurso"
+  [modal]="true"
+  [style]="{ width: '500px' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  @if (selectedItem) {
+  <app-resource-list
+    [selectedItem]="selectedItem"
+    (modalState)="openRecurso = $event"
+  ></app-resource-list>
+  }
 </p-dialog>
 
 <p-confirmDialog

@@ -14,6 +14,11 @@ export const routes: Routes = [
       import('./client-panel/client.routes').then((m) => m.CLIENT_ROUTES),
   },
   {
+    path: '',
+    loadChildren: () =>
+      import('./landing/landing.routes').then((m) => m.LANDING_ROUTES),
+  },
+  {
     path: 'login',
     loadComponent: () =>
       import('./authentication/login/login.component').then(
@@ -23,6 +28,6 @@ export const routes: Routes = [
   {
     path: '**',
     pathMatch: 'full',
-    redirectTo: 'login',
+    redirectTo: '',
   },
 ];

@@ -17,6 +17,7 @@ import { LessonService } from '../../../services';
 import { ConfirmationService } from 'primeng/api';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { Lesson, Topic } from '../../../../interfaces';
+import { ResourceListComponent } from '../resource-list/resource-list.component';
 
 @Component({
   selector: 'app-lesson-list',
@@ -29,6 +30,7 @@ import { Lesson, Topic } from '../../../../interfaces';
     ConfirmDialogModule,
     HeadCardComponent,
     LessonFormComponent,
+    ResourceListComponent
   ],
   templateUrl: './list.component.html',
   styles: ``,
@@ -41,6 +43,7 @@ export class LessonListComponent implements OnChanges {
 
   selectedItem: Lesson | undefined;
   openEdit = false;
+  openRecurso = false;
   openCreate = false;
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -18,7 +18,7 @@
         <h1
           class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl"
         >
-          Sign in to your account
+          Inicia sesión en tu cuenta
         </h1>
         <form
           [formGroup]="form"
@@ -30,7 +30,7 @@
             <label
               for="username"
               class="block mb-2 text-sm font-medium text-gray-900"
-              >Your Username</label
+              >Nombre de usuario</label
             >
             <input
               type="username"
@@ -46,7 +46,7 @@
             <label
               for="password"
               class="block mb-2 text-sm font-medium text-gray-900"
-              >Password</label
+              >Contraseña</label
             >
             <input
               type="password"
@@ -81,7 +81,7 @@
           </div>
 
           <p-button
-            label="Sign in"
+            label="Iniciar sesión"
             [loading]="authService.isLoading()"
             type="submit"
             size="small"

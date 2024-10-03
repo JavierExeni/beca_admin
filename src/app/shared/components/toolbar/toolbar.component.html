@@ -11,3 +11,8 @@
     />
   </div>
 </header>
+
+<p-dialog header="Editar Perfil" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+  <span class="p-text-secondary block mb-5">Actualiza tu información.</span>
+  <app-admin-form [isEdit]="true" [selectedItem]="authService.currentLoggedUser()"></app-admin-form>
+</p-dialog>

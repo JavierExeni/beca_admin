@@ -12,6 +12,11 @@ export type Lesson = {
   is_viewed?: boolean;
 };
 
+export type ResourceLesson = {
+  id: number;
+  resource: string;
+};
+
 export type LessonRequest = Omit<Lesson, 'id'> & {
   topic_id: number;
   viewed_id?: number[];
