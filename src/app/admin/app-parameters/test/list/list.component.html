@@ -1,1 +1,32 @@
-<p>list works!</p>
+<fieldset
+  class="grid grid-cols-1 gap-2 border border-light-gray rounded-md p-4"
+>
+  <h2 class="font-semibold text-lg">Listado de estudiantes</h2>
+  <p>Cantidad: {{ clients().clients_taken.length }}</p>
+  <ul class="max-w-md divide-y divide-gray-200 min-w-80">
+    @for (item of clients().clients_taken; track $index) {
+    <li class="pb-3 sm:pb-4">
+      <div class="flex items-center space-x-4 rtl:space-x-reverse">
+        <div class="flex-1 min-w-0">
+          <p class="text-lg font-semibold text-gray-900 truncate">
+            {{ item.client_fullname }}
+          </p>
+          <div
+            class="inline-flex items-center text-sm text-gray-900"
+          >
+            {{ item.score }} / {{ item.total_score }}
+          </div>
+        </div>
+        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+          <span></span>
+          @if (item.is_passed) {
+          <p-tag severity="success" value="Aprobado" />
+          }@else{
+          <p-tag severity="danger" value="Reprobado" />
+          }
+        </p>
+      </div>
+    </li>
+    }
+  </ul>
+</fieldset>

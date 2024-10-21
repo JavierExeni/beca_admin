@@ -1,9 +1,8 @@
 <p-table
   [value]="lessonService.resources()"
-  [paginator]="true"
-  [rows]="5"
+  [rows]="20"
   [tableStyle]="{ 'min-width': '50rem' }"
-  [rowsPerPageOptions]="[5, 10, 20]"
+
 >
   <ng-template pTemplate="caption">
     <p-fileUpload
@@ -19,15 +18,17 @@
   </ng-template>
   <ng-template pTemplate="header">
     <tr>
+      <th>N°</th>
       <th>Archivo</th>
       <th class="text-center">Acciones</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-item>
     <tr>
+      <td>{{ item.id }}</td>
       <td>
         <a
-          [href]="'https://www.youtube.com/watch?v=' + item.youtube_code"
+          [href]="'http://localhost:8000' + item.youtube_code"
           target="_blank"
           rel="noopener noreferrer"
           class="text-[#2563eb] hover:border-b border-b-[#2563eb]"

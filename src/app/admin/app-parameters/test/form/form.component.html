@@ -1,1 +1,152 @@
-<p>form works!</p>
+<div class="flex gap-2">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <fieldset
+      class="grid grid-cols-1 gap-2 border border-light-gray rounded-md p-4"
+    >
+      <div class="form-element">
+        <label for="test-title">Titulo del Examen</label>
+        <input type="text" pInputText formControlName="title" />
+      </div>
+
+      <div class="form-element">
+        <label for="lesson-description">Descripción</label>
+        <input type="text" pInputText formControlName="description" />
+      </div>
+
+      <div class="form-element">
+        <label for="text-passingScorePercentage">Puntos de aprobación</label>
+        <p-inputNumber
+          formControlName="passingScorePercentage"
+          mode="decimal"
+          inputId="text-passingScorePercentage"
+          [useGrouping]="false"
+        />
+      </div>
+    </fieldset>
+
+    <div class="flex justify-end mt-4">
+      <p-button
+        type="button"
+        (click)="addQuestion()"
+        label="Añadir pregunta"
+        aria-label="add button"
+        severity="primary"
+        size="small"
+      ></p-button>
+    </div>
+
+    <!-- Questions -->
+    <div formArrayName="questions">
+      @for (question of questions.controls; track $index; let idx = $index) {
+      <fieldset
+        [formGroupName]="idx"
+        class="grid grid-cols-1 gap-2 border border-light-gray rounded-md p-4 mt-4 relative"
+      >
+        <h1 class="font-semibold">Pregunta {{ idx + 1 }}</h1>
+        <input type="text" pInputText formControlName="question" />
+        <input type="text" pInputText formControlName="instruction" />
+
+        <div class="form-element">
+          <p-inputNumber
+            formControlName="score"
+            mode="decimal"
+            inputId="text-score"
+            [useGrouping]="false"
+          />
+        </div>
+        <div class="form-element !flex items-center gap-2">
+          <p-fileUpload
+            #fileUpload
+            id="upload"
+            mode="basic"
+            chooseLabel="Recurso"
+            name="myfile[]"
+            [customUpload]="true"
+            (onSelect)="saveDocument($event, idx)"
+            accept="image/*"
+            [maxFileSize]="10000000000"
+            size="small"
+            styleClass="p-button-sm"
+          ></p-fileUpload>
+
+          <p-button
+            type="button"
+            (click)="deleteDocument(fileUpload, idx)"
+            label="Remover"
+            aria-label="remove button"
+            severity="danger"
+            size="small"
+          ></p-button>
+        </div>
+
+        <hr />
+
+        <!-- Options -->
+        <div class="flex justify-end">
+          <p-button icon="pi pi-plus" (onClick)="addOption(idx)" />
+        </div>
+        <ul class="grid grid-cols-1 gap-2" formArrayName="options">
+          @for (option of question.value.options; track $index; let opIdx =
+          $index) {
+          <li [formGroupName]="opIdx">
+            <div class="grid grid-cols-[auto_1fr_auto] gap-2 items-center">
+              <p-button
+                icon="pi pi-times"
+                severity="danger"
+                (onClick)="deleteOption(idx, opIdx)"
+              />
+              <input type="text" pInputText formControlName="possible_answer" />
+
+              <p-toggleButton
+                onIcon="pi pi-check"
+                offIcon="pi pi-times"
+                formControlName="is_correct"
+              />
+            </div>
+            <div class="flex items-center gap-2 mt-2">
+              <p-fileUpload
+                #fileUpload
+                id="upload"
+                mode="basic"
+                chooseLabel="Recurso"
+                name="myfile[]"
+                [customUpload]="true"
+                (onSelect)="saveFileOption($event, idx, opIdx)"
+                accept="image/*"
+                [maxFileSize]="10000000000"
+                size="small"
+                styleClass="p-button-sm"
+              ></p-fileUpload>
+
+              <p-button
+                type="button"
+                (click)="deleteFileOption(fileUpload, idx, opIdx)"
+                label="Remover"
+                aria-label="remove button"
+                severity="danger"
+                size="small"
+              ></p-button>
+            </div>
+          </li>
+          }
+        </ul>
+        <i
+          (click)="removeQuestion(idx)"
+          class="text-xl fa-solid fa-square-xmark absolute top-0 right-0 text-red-600 cursor-pointer"
+        ></i>
+      </fieldset>
+      }
+    </div>
+    <div class="flex justify-end mt-4">
+      <p-button
+        aria-label="submit button"
+        type="submit"
+        size="small"
+        [label]="isEdit() ? 'Actualizar' : 'Registrar'"
+      />
+    </div>
+  </form>
+  @if (test) {
+    <app-clients-test-list [clients]="test"></app-clients-test-list>
+  }
+</div>

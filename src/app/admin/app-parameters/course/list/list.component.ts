@@ -14,6 +14,7 @@ import { ToastService } from '../../../../shared/services/toast.service';
 import { AuthService } from '../../../../authentication/auth.service';
 import { USER_TYPE } from '../../../../shared/enum/user-type.enum';
 import { TopicListComponent } from '../../topic/list/list.component';
+import { TestFormComponent } from '../../test/form/form.component';
 
 @Component({
   selector: 'app-list',
@@ -27,7 +28,8 @@ import { TopicListComponent } from '../../topic/list/list.component';
     ConfirmDialogModule,
     HeadCardComponent,
     CourseFormComponent,
-    TopicListComponent
+    TopicListComponent,
+    TestFormComponent,
   ],
   templateUrl: './list.component.html',
   styles: ``,
@@ -43,15 +45,19 @@ export class ListComponent {
   selectedItem: Course | undefined;
   openEdit = false;
   openCreate = false;
+  openTest = false;
+  openEditTest = false;
   expandedRows = {};
 
   expandAll() {
-    this.expandedRows = this.courseService.courses().reduce((acc: any, c) => (acc[c.id] = true) && acc, {});
-}
+    this.expandedRows = this.courseService
+      .courses()
+      .reduce((acc: any, c) => (acc[c.id] = true) && acc, {});
+  }
 
-collapseAll() {
+  collapseAll() {
     this.expandedRows = {};
-}
+  }
 
   editModal(item: Course) {
     this.openEdit = true;

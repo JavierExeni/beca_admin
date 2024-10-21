@@ -15,6 +15,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { LessonService } from '../../../services';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-resource-list',
@@ -56,6 +57,7 @@ export class ResourceListComponent implements OnChanges {
               'Success',
               '¡Recurso eliminada!'
             );
+            this.file.reset();
           },
           error: () => {
             this.toastService.showToast(
@@ -64,6 +66,7 @@ export class ResourceListComponent implements OnChanges {
               'Error',
               'Error al eliminar la Recurso.'
             );
+            this.file.reset();
           },
           complete: () =>
             this.lessonService.loadResourcesByLesson(this.selectedItem()!.id),
@@ -107,7 +110,8 @@ export class ResourceListComponent implements OnChanges {
         );
         this.modalState.emit(false);
       },
-      complete: () => this.lessonService.loadResourcesByLesson(this.selectedItem()!.id),
+      complete: () =>
+        this.lessonService.loadResourcesByLesson(this.selectedItem()!.id),
     });
   }
 }

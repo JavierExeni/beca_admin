@@ -8,6 +8,8 @@
     class="rounded-sm border border-light-gray bg-white px-5 pb-2.5 pt-6 shadow-sm drop-shadow-md sm:px-7 xl:pb-1"
   >
     <p-table
+    dataKey="id"
+    [expandedRowKeys]="expandedRows"
       [value]="lessonService.lessons()"
       [paginator]="true"
       [rows]="5"
@@ -16,6 +18,7 @@
     >
       <ng-template pTemplate="header">
         <tr>
+          <th style="width: 5rem"></th>
           <th>Titulo</th>
           <th>Orden</th>
           <th>Tema</th>
@@ -23,8 +26,19 @@
           <th class="text-center">Acciones</th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-item>
+      <ng-template pTemplate="body" let-item let-expanded="expanded">
         <tr>
+          <td>
+            <p-button
+              type="button"
+              pRipple
+              [pRowToggler]="item"
+              [text]="true"
+              [rounded]="true"
+              [plain]="true"
+              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+            />
+          </td>
           <td>{{ item.title }}</td>
           <td>{{ item.order }}</td>
           <td>{{ item.topic }}</td>
@@ -59,14 +73,6 @@
                       class="p-button-text p-button-sm text-start"
                       (click)="editModal(item)"
                     ></button>
-                    <button
-                      pButton
-                      pRipple
-                      type="button"
-                      label="Añadir recurso"
-                      (click)="selectedItem = item; openRecurso = true"
-                      class="p-button-text p-button-sm text-start"
-                    ></button>
 
                     <button
                       pButton
@@ -79,6 +85,15 @@
                   </div>
                 </ng-template>
               </p-overlayPanel>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="rowexpansion" let-item>
+        <tr>
+          <td colspan="7">
+            <div class="p-2">
+              <app-resource-list [selectedItem]="item"></app-resource-list>
             </div>
           </td>
         </tr>
@@ -111,22 +126,6 @@
     (modalState)="openEdit = $event"
     [topic]="topic()"
   ></app-lesson-form>
-</p-dialog>
-
-<p-dialog
-  header="Añadir Recurso"
-  [(visible)]="openRecurso"
-  [modal]="true"
-  [style]="{ width: '500px' }"
-  [draggable]="false"
-  [resizable]="false"
->
-  @if (selectedItem) {
-  <app-resource-list
-    [selectedItem]="selectedItem"
-    (modalState)="openRecurso = $event"
-  ></app-resource-list>
-  }
 </p-dialog>
 
 <p-confirmDialog

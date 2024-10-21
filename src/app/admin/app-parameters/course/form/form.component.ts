@@ -92,7 +92,7 @@ export class CourseFormComponent implements OnInit {
         profesor_owned: this.selectedItem()!.profesor_owned as any,
         is_active: this.selectedItem()!.is_active,
         test: this.selectedItem()!.test
-          ? (this.selectedItem()!.test.id as any)
+          ? (this.selectedItem()!.test as any)
           : null,
       });
     }

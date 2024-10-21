@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-
+import { Component, input } from '@angular/core';
+import { TagModule } from 'primeng/tag';
 @Component({
-  selector: 'app-list',
+  selector: 'app-clients-test-list',
   standalone: true,
-  imports: [],
+  imports: [TagModule],
   templateUrl: './list.component.html',
-  styles: ``
+  styles: ``,
 })
-export class ListComponent {
-
+export class ClientsTestListComponent {
+  clients = input<any>();
 }

@@ -17,7 +17,7 @@ export class LessonService {
   http = inject(HttpClient);
 
   baseUrl = `${environment.baseUrl}languages/lessons/`;
-  baseUrlResources = `${environment.baseUrl}languages/lesson/`;
+  baseUrlResources = `${environment.baseUrl}languages/resources/`;
 
   #state = signal<State>({
     lessons: [],
@@ -99,7 +99,7 @@ export class LessonService {
   }
 
   getResourcesByLesson(id: number) {
-    const url = `${this.baseUrl}resources/${id}/get-resources/`;
+    const url = `${this.baseUrl}${id}/resources/`;
     return this.http.get<ResourceLesson[]>(url).pipe(
       tap((resources) => {
         this.changeLoadingState(false);
@@ -131,7 +131,7 @@ export class LessonService {
     const fd = new FormData();
     fd.append('resource', resource);
     fd.append('lesson', lesson.toString());
-    const url = `${this.baseUrlResources}resources/`;
+    const url = `${this.baseUrlResources}`;
     return this.http.post<LessonRequest>(url, fd).pipe(
       tap((_) => {
         this.changeLoadingState(false);
@@ -157,7 +157,7 @@ export class LessonService {
 
   deleteResource(id: number) {
     this.changeLoadingState(true);
-    const url = `${this.baseUrl}resources/${id}/`;
+    const url = `${this.baseUrlResources}${id}/`;
     return this.http.delete(url);
   }
 

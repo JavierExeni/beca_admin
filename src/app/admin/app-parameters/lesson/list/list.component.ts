@@ -30,7 +30,7 @@ import { ResourceListComponent } from '../resource-list/resource-list.component'
     ConfirmDialogModule,
     HeadCardComponent,
     LessonFormComponent,
-    ResourceListComponent
+    ResourceListComponent,
   ],
   templateUrl: './list.component.html',
   styles: ``,
@@ -45,6 +45,17 @@ export class LessonListComponent implements OnChanges {
   openEdit = false;
   openRecurso = false;
   openCreate = false;
+  expandedRows = {};
+
+  expandAll() {
+    this.expandedRows = this.lessonService
+      .lessons()
+      .reduce((acc: any, c) => (acc[c.id] = true) && acc, {});
+  }
+
+  collapseAll() {
+    this.expandedRows = {};
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.lessonService.loadlessonsByTopic(this.topic().id);

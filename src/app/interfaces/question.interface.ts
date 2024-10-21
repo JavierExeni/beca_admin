@@ -20,6 +20,7 @@ export type QuestionRequest = Omit<Question, 'id' | 'clients_taken'> & {
 export type Option = {
   id: number;
   possible_answer: string;
+  is_correct: boolean;
   resource: string;
 };
 

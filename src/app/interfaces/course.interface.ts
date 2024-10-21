@@ -20,7 +20,7 @@ export type Course = {
 };
 
 export type CourseRequest = Omit<Course, 'id' | 'test' | 'level' | 'language' | 'created_by'> & {
-  test_id: number;
+  test: number;
   level_id: number;
   language_id: number;
   created_by_id: number;
