@@ -42,7 +42,7 @@ export class LoginComponent {
             break;
           case USER_TYPE.TEACHER:
             console.log('TEACHER');
-            this.router.navigate(['/admin/parametros/']);
+            this.router.navigate(['/admin/parametros/cursos/']);
             break;
           case USER_TYPE.CLIENT:
             console.log('CLIENT');
